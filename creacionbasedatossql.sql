@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `derrapdb`.`almacen` (
   INDEX `fk_almacen_proveedor1_idx` (`proveedor_id` ASC) VISIBLE,
   CONSTRAINT `fk_almacen_proveedor1`
     FOREIGN KEY (`proveedor_id`)
-    REFERENCES `mydb`.`proveedor` (`id`)
+    REFERENCES `derrapdb`.`proveedor` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
