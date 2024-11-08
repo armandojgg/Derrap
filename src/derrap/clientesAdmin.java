@@ -1,7 +1,6 @@
 package derrap;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -46,22 +45,6 @@ public class clientesAdmin extends JFrame {
 	Connection cn = null;
 	Statement stm = null;
 	ResultSet resultado = null;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					clientesAdmin frame = new clientesAdmin();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.

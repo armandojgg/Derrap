@@ -1,7 +1,6 @@
 package derrap;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -37,22 +36,6 @@ public class loginmecanico extends JFrame {
 	Connection cn = null;
 	Statement stm = null;
 	ResultSet resultado = null;
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					loginmecanico frame = new loginmecanico();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.

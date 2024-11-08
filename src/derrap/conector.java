@@ -76,7 +76,8 @@ public class conector {
     
     public void insertarDatosClientes(String dni, String nombre, String apellido1, String apellido2, String telefono, String direccion, String email, String fecha_registro) {
     	try (Connection connection = conexion_correcta();
-    		 PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO cliente (dni, nombre, apellido1, apellido2, telefono, direccion, email, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+    		 PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO cliente (dni, nombre, apellido1, apellido2, telefono, direccion, email, fecha_registro) "
+    		 		+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
     		preparedStatement.setString(1, dni);
     		preparedStatement.setString(2, nombre);
     		preparedStatement.setString(3, apellido1);

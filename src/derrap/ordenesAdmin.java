@@ -1,7 +1,6 @@
 package derrap;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -44,22 +43,6 @@ public class ordenesAdmin extends JFrame {
 	Connection cn = null;
 	Statement stm = null;
 	ResultSet resultado = null;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					homeAdmin frame = new homeAdmin();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
