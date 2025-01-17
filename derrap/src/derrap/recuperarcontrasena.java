@@ -19,6 +19,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import derrap.ADMIN.loginadmin;
+
 public class recuperarcontrasena extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -50,7 +52,7 @@ public class recuperarcontrasena extends JFrame {
      */
     public recuperarcontrasena() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Recupera tu contraseña");
+        setTitle("Recuperación contraseña");
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/iconoderrap.jpg")).getImage());
         setBounds(100, 100, 862, 684);
         contentPane = new JPanel();
