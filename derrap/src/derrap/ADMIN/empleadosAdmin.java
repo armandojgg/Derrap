@@ -379,40 +379,40 @@ public class empleadosAdmin extends JFrame {
 	// M E T O D O S
 
 	private void mostrartablaempleados() {
-	    String[] nombreColumnas = { "ID Cliente", "Nombre Cliente", "Fecha de Registro" };
-	    
-	    DefaultTableModel model = new DefaultTableModel() {
-	        /**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
+	    String[] nombreColumnas = { "ID EMPLEADO", "NOMBRE", "PRIMER APELLIDO", "SEGUNDO APELLIDO", "TELEFONO", "ROL" };
 
-			@Override
+	    DefaultTableModel model = new DefaultTableModel() {
+	        private static final long serialVersionUID = 1L;
+
+	        @Override
 	        public boolean isCellEditable(int row, int column) {
 	            return false;
 	        }
 	    };
 	    model.setColumnIdentifiers(nombreColumnas);
-	    
+
 	    tabla = new JTable(model);
 	    scrollPane = new JScrollPane(tabla);
 	    scrollPane.setBounds(191, 196, 800, 402);
 	    contentPane.add(scrollPane);
-	    
+
 	    try {
 	        stm = cn.createStatement();
-	        String selectEmpleados = "SELECT c.dni AS 'ID Cliente', c.nombre AS 'Nombre Cliente', c.fecha_registro AS 'Fecha de Registro' " +
-	                                 "FROM derrapdb.cliente c " +
-	                                 "JOIN derrapdb.vehiculo v ON c.dni = v.cliente_dni " +
-	                                 "JOIN derrapdb.orden_reparacion o ON v.matricula = o.vehiculo_matricula " +
-	                                 "JOIN derrapdb.usuario u ON c.dni = u.dni " +
-	                                 "WHERE u.rol = 'mecanico';";
+	        // Consulta para obtener los datos de los mecánicos
+	        String selectEmpleados = "SELECT u.dni AS 'ID EMPLEADO', u.nombre AS 'NOMBRE', u.apellido1 AS 'PRIMER APELLIDO', " +
+	                                 "u.apellido2 AS 'SEGUNDO APELLIDO', u.telefono AS 'TELEFONO', u.rol AS 'ROL' " +
+	                                 "FROM derrapdb.usuario u " +
+	                                 "WHERE u.rol = 'Mecánico';"; // Filtra solo los mecánicos
 	        resultado = stm.executeQuery(selectEmpleados);
 	        while (resultado.next()) {
-	            String idCliente = resultado.getString("ID Cliente");
-	            String nombreCliente = resultado.getString("Nombre Cliente");
-	            String fechaRegistro = resultado.getString("Fecha de Registro");
-	            model.addRow(new Object[] { idCliente, nombreCliente, fechaRegistro });
+	            String idEmpleado = resultado.getString("ID EMPLEADO");
+	            String nombreEmpleado = resultado.getString("NOMBRE");
+	            String primerApellido = resultado.getString("PRIMER APELLIDO");
+	            String segundoApellido = resultado.getString("SEGUNDO APELLIDO");
+	            String telefono = resultado.getString("TELEFONO");
+	            String rol = resultado.getString("ROL");
+
+	            model.addRow(new Object[] { idEmpleado, nombreEmpleado, primerApellido, segundoApellido, telefono, rol });
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();

@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -28,7 +30,7 @@ import derrap.conector;
 import derrap.eleccionlogin;
 import derrap.recuperarcontrasena;
 
-public class loginmecanico extends JFrame {
+public class loginmecanico extends JFrame implements KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -41,8 +43,7 @@ public class loginmecanico extends JFrame {
 	Connection cn = null;
 	Statement stm = null;
 	ResultSet resultado = null;
-	
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -55,7 +56,7 @@ public class loginmecanico extends JFrame {
 			}
 		});
 	}
-	
+
 	/**
 	 * Create the frame.
 	 */
@@ -197,7 +198,7 @@ public class loginmecanico extends JFrame {
 
 		btnIniciarSesion = new JButton("Iniciar sesión");
 		btnIniciarSesion.setBounds(45, 350, 194, 35);
-		btnIniciarSesion.setBackground(Color.red); // Color del fondo del botón azul oscuro.
+		btnIniciarSesion.setBackground(new Color(255, 0, 0)); // Color del fondo del botón rojo.
 		btnIniciarSesion.setForeground(Color.WHITE); // Color de las letras en blanco.
 		contentPane.add(btnIniciarSesion);
 
@@ -216,16 +217,16 @@ public class loginmecanico extends JFrame {
 					JOptionPane.showMessageDialog(contentPane,
 							"DNI o contraseña incorrectos. Además comprueba que el rol del DNI introducido sea el correcto.",
 							"Error de Inicio de Sesión", JOptionPane.ERROR_MESSAGE);
-		            txtFieldIntroducirDNI.setText("Ingrese su DNI");
-		            txtFieldIntroducirDNI.setForeground(Color.GRAY);
-		            txtContrasena.setText("Ingresa tu contraseña");
-		            txtContrasena.setForeground(Color.GRAY);
+					txtFieldIntroducirDNI.setText("Ingrese su DNI");
+					txtFieldIntroducirDNI.setForeground(Color.GRAY);
+					txtContrasena.setText("Ingresa tu contraseña");
+					txtContrasena.setForeground(Color.GRAY);
 				}
 			}
 		});
 
 		btnAtras = new JButton("Atrás");
-		btnAtras.setBackground(new Color(67,15,15));
+		btnAtras.setBackground(new Color(67, 15, 15));
 		btnAtras.setForeground(new Color(255, 255, 255));
 		btnAtras.setBounds(85, 492, 121, 38);
 		contentPane.add(btnAtras);
@@ -241,14 +242,35 @@ public class loginmecanico extends JFrame {
 		setLocationRelativeTo(null); // Se centra la ventana en la pantalla
 
 		// F O C U S A B L E
-
-		etiquetaCoche.setFocusable(true);
+		contentPane.setFocusable(true);
+		contentPane.requestFocusInWindow();
+		contentPane.addKeyListener(this);
 
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowOpened(java.awt.event.WindowEvent e) {
-				etiquetaCoche.requestFocus();
+				contentPane.requestFocus();
 			}
 		});
+
+	}
+
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void keyPressed(KeyEvent e) {
+		int keyCode = e.getKeyCode();
+
+		if (keyCode == KeyEvent.VK_ESCAPE) {
+
+			btnAtras.doClick();
+		}
+
+	}
+
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 

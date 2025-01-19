@@ -1,8 +1,9 @@
- package derrap.MECANICO;
+package derrap.MECANICO;
 
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import derrap.conector;
 import derrap.eleccionlogin;
@@ -28,12 +31,21 @@ public class menumecanico extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, panelOpcionesMenu_1, panelOpcionesMenu_2, panelOpcionesMenu;
 	private JButton btnHome, btnClientes, btnVehiculos, btnOrdenes, btnPrecio, btnStock, btnActivo;
-	private JLabel lblMecanico, lblIconoCasa, lblIcono, lblLogOut, lblImagenLogOut, lblPoweredDerrap;
+	private JLabel lblMecanico, lblIconoCasa, lblIcono, lblLogOut, lblImagenLogOut, lblPoweredDerrap, lblBienvenido,
+			lblOrdenes, orden1Estado, orden1Diagnostico, orden1Reparacion, orden1FechaIngreso, orden1FechaEntrega,
+			orden2Estado, orden2Diagnostico, orden2Reparacion, orden2FechaIngreso, orden2FechaEntrega;
+	private JPanel panelPrimeraOrden, panelSegundaOrden;
 
 	conector conexion = new conector();
 	Connection cn = null;
 	Statement stm = null;
 	ResultSet resultado = null;
+	private JPanel panelTerceraOrden;
+	private JLabel orden2Estado_1;
+	private JLabel orden2Diagnostico_1;
+	private JLabel orden2Reparacion_1;
+	private JLabel orden2FechaIngreso_1;
+	private JLabel orden2FechaEntrega_1;
 
 	/**
 	 * Launch the application.
@@ -64,8 +76,6 @@ public class menumecanico extends JFrame {
 		contentPane.setBackground(Color.WHITE);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
 
 		// J P A N E L
 		panelOpcionesMenu = new JPanel();
@@ -74,7 +84,7 @@ public class menumecanico extends JFrame {
 		panelOpcionesMenu.setBackground(new Color(128, 0, 0)); // Color del fondo del botón azul oscuro.
 		panelOpcionesMenu.setLayout(null);
 
-		// B O T O N  H O M E
+		// B O T O N H O M E
 		btnHome = new JButton("Home");
 		btnHome.setBackground(Color.WHITE); // Fondo blanco al iniciar
 		btnHome.setBounds(0, 0, 181, 39);
@@ -90,7 +100,7 @@ public class menumecanico extends JFrame {
 					// ----------------------------
 					btnHome.setEnabled(false);
 					btnHome.setBackground(Color.WHITE);
-					
+
 					// L A B E L S
 					// ---------------------------------------
 					lblIconoCasa.setVisible(true);
@@ -105,7 +115,7 @@ public class menumecanico extends JFrame {
 			}
 		});
 
-		// B O T O N  C L I E N T E S
+		// B O T O N C L I E N T E S
 		btnClientes = new JButton("Clientes");
 		btnClientes.setBackground(new Color(128, 0, 0));
 		btnClientes.setForeground(Color.WHITE);
@@ -121,7 +131,7 @@ public class menumecanico extends JFrame {
 			}
 		});
 
-		// B O T O N  V E H I C U L O S
+		// B O T O N V E H I C U L O S
 		btnVehiculos = new JButton("Vehículos");
 		btnVehiculos.setForeground(Color.WHITE);
 		btnVehiculos.setBackground(new Color(128, 0, 0));
@@ -137,7 +147,7 @@ public class menumecanico extends JFrame {
 			}
 		});
 
-		// B O T O N  O R D E N E S
+		// B O T O N O R D E N E S
 		btnOrdenes = new JButton("Ordenes");
 		btnOrdenes.setForeground(Color.WHITE);
 		btnOrdenes.setBackground(new Color(128, 0, 0));
@@ -153,7 +163,7 @@ public class menumecanico extends JFrame {
 			}
 		});
 
-		// B O T O N  P R E C I O
+		// B O T O N P R E C I O
 		btnPrecio = new JButton("Precio");
 		btnPrecio.setForeground(Color.WHITE);
 		btnPrecio.setBackground(new Color(128, 0, 0));
@@ -169,7 +179,7 @@ public class menumecanico extends JFrame {
 			}
 		});
 
-		// B O T O N  S T O C K
+		// B O T O N S T O C K
 		btnStock = new JButton("Stock");
 		btnStock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -185,19 +195,7 @@ public class menumecanico extends JFrame {
 
 		// Inicialmente, el botón activo es nulo
 		btnActivo = null;
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(215, 152, 210, 416);
-		contentPane.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("New button");
-		btnNewButton_1.setBounds(452, 152, 210, 416);
-		contentPane.add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("New button");
-		btnNewButton_2.setBounds(688, 152, 210, 416);
-		contentPane.add(btnNewButton_2);
-		
+
 		// P A N E L E S
 		panelOpcionesMenu_1 = new JPanel();
 		panelOpcionesMenu_1.setLayout(null);
@@ -211,7 +209,88 @@ public class menumecanico extends JFrame {
 		panelOpcionesMenu_2.setBounds(0, 304, 181, 369);
 		contentPane.add(panelOpcionesMenu_2);
 
-		// J L A B E L S  E  I M A G E N E S
+		// P A N E L E S O R D E N E S
+		panelPrimeraOrden = new JPanel();
+		panelPrimeraOrden.setBackground(new Color(128, 0, 0));
+		panelPrimeraOrden.setBounds(198, 221, 223, 311);
+		panelPrimeraOrden.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE),
+				"Orden OR001", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, Color.WHITE));
+
+		panelPrimeraOrden.setLayout(new GridLayout(0, 1));
+		contentPane.add(panelPrimeraOrden);
+
+		orden1Estado = new JLabel("Estado: Pendiente");
+		orden1Estado.setForeground(new Color(255, 255, 255));
+		orden1Estado.setBackground(new Color(255, 255, 255));
+		orden1Diagnostico = new JLabel("Diagnóstico: Fallo en motor");
+		orden1Diagnostico.setForeground(new Color(255, 255, 255));
+		orden1Reparacion = new JLabel("Reparación: Cambio de bujías y revisión");
+		orden1Reparacion.setForeground(new Color(255, 255, 255));
+		orden1FechaIngreso = new JLabel("Ingreso: 2023-09-20");
+		orden1FechaIngreso.setForeground(new Color(255, 255, 255));
+		orden1FechaEntrega = new JLabel("Entrega: 2023-09-25");
+		orden1FechaEntrega.setForeground(new Color(255, 255, 255));
+
+		panelPrimeraOrden.add(orden1Estado);
+		panelPrimeraOrden.add(orden1Diagnostico);
+		panelPrimeraOrden.add(orden1Reparacion);
+		panelPrimeraOrden.add(orden1FechaIngreso);
+		panelPrimeraOrden.add(orden1FechaEntrega);
+
+		panelSegundaOrden = new JPanel();
+		panelSegundaOrden.setBackground(new Color(128, 0, 0));
+		panelSegundaOrden.setBounds(448, 221, 223, 311);
+		panelSegundaOrden.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE),
+				"Orden OR002", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, Color.WHITE));
+		contentPane.add(panelSegundaOrden);
+		panelSegundaOrden.setLayout(new GridLayout(0, 1));
+
+		orden2Estado = new JLabel("Estado: Pendiente");
+		orden2Estado.setForeground(new Color(255, 255, 255));
+		orden2Diagnostico = new JLabel("Diagnóstico: Freno desgastado");
+		orden2Diagnostico.setForeground(new Color(255, 255, 255));
+		orden2Reparacion = new JLabel("Reparación: Cambio de pastillas de freno");
+		orden2Reparacion.setForeground(new Color(255, 255, 255));
+		orden2FechaIngreso = new JLabel("Ingreso: 2023-10-01");
+		orden2FechaIngreso.setForeground(new Color(255, 255, 255));
+		orden2FechaEntrega = new JLabel("Entrega: 2023-10-15");
+		orden2FechaEntrega.setForeground(new Color(255, 255, 255));
+
+		panelSegundaOrden.add(orden2Estado);
+		panelSegundaOrden.add(orden2Diagnostico);
+		panelSegundaOrden.add(orden2Reparacion);
+		panelSegundaOrden.add(orden2FechaIngreso);
+		panelSegundaOrden.add(orden2FechaEntrega);
+		
+		panelTerceraOrden = new JPanel();
+		panelTerceraOrden.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.WHITE),
+						"Orden OR003", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, Color.WHITE));
+		panelTerceraOrden.setBackground(new Color(128, 0, 0));
+		panelTerceraOrden.setBounds(697, 221, 223, 311);
+		contentPane.add(panelTerceraOrden);
+		panelTerceraOrden.setLayout(new GridLayout(0, 1));
+		
+		orden2Estado_1 = new JLabel("Estado: Pendiente");
+		orden2Estado_1.setForeground(Color.WHITE);
+		panelTerceraOrden.add(orden2Estado_1);
+		
+		orden2Diagnostico_1 = new JLabel("Diagnóstico: Aceite sucio");
+		orden2Diagnostico_1.setForeground(Color.WHITE);
+		panelTerceraOrden.add(orden2Diagnostico_1);
+		
+		orden2Reparacion_1 = new JLabel("Reparación: Cambio de aceite y filtro");
+		orden2Reparacion_1.setForeground(Color.WHITE);
+		panelTerceraOrden.add(orden2Reparacion_1);
+		
+		orden2FechaIngreso_1 = new JLabel("Ingreso: 2023-09-30");
+		orden2FechaIngreso_1.setForeground(Color.WHITE);
+		panelTerceraOrden.add(orden2FechaIngreso_1);
+		
+		orden2FechaEntrega_1 = new JLabel("Entrega: 2023-10-05");
+		orden2FechaEntrega_1.setForeground(Color.WHITE);
+		panelTerceraOrden.add(orden2FechaEntrega_1);
+
+		// J L A B E L S E I M A G E N E S
 		lblMecanico = new JLabel("Mecánico");
 		lblMecanico.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblMecanico.setHorizontalAlignment(SwingConstants.CENTER);
@@ -267,9 +346,33 @@ public class menumecanico extends JFrame {
 		lblPoweredDerrap.setBounds(22, 319, 149, 39);
 		panelOpcionesMenu_2.add(lblPoweredDerrap);
 
+		lblBienvenido = new JLabel("¡Bienvenido de nuevo!");
+		lblBienvenido.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBienvenido.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblBienvenido.setBounds(406, 85, 223, 26);
+		contentPane.add(lblBienvenido);
+
+		lblOrdenes = new JLabel("Ordenes pendientes:");
+		lblOrdenes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOrdenes.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblOrdenes.setBounds(198, 170, 188, 26);
+		contentPane.add(lblOrdenes);
+		
+		JButton btnDetallesOrdenes = new JButton("Ver más");
+		btnDetallesOrdenes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ordenesMecanico frame = new ordenesMecanico();
+				frame.setVisible(true);
+				dispose();
+			}
+		});
+		btnDetallesOrdenes.setBackground(new Color(128, 0, 0));
+		btnDetallesOrdenes.setForeground(new Color(255, 255, 255));
+		btnDetallesOrdenes.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		btnDetallesOrdenes.setBounds(454, 564, 203, 66);
+		contentPane.add(btnDetallesOrdenes);
+
 		setLocationRelativeTo(null); // Se centra la ventana en la pantalla
 
 	}
-
-
 }

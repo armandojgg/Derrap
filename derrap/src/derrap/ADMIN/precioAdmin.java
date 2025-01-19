@@ -343,43 +343,43 @@ public class precioAdmin extends JFrame {
 	// M E T O D O S
 
 	private void mostrartablaprecios() {
-		String[] nombreColumnas = { "ID Cliente", "Nombre Cliente", "Fecha de Registro", "Matrícula Asociada",
-				"Estado de la Orden" };
-		DefaultTableModel model = new DefaultTableModel();
-		model.setColumnIdentifiers(nombreColumnas);
-		tabla = new JTable(model);
-		scrollPane = new JScrollPane(tabla);
-		scrollPane.setBounds(191, 196, 800, 402);
-		contentPane.add(scrollPane);
-		// Conexión a la base de datos y ejecución de la consulta
-		try {
-			stm = cn.createStatement();
-			String selectPrecio = "SELECT c.dni AS 'ID Cliente', c.nombre AS 'Nombre Cliente', c.fecha_registro AS 'Fecha de Registro', "
-					+ "v.matricula AS 'Matrícula Asociada', o.estado_orden AS 'Estado de la Orden'"
-					+ " FROM derrapdb.cliente c" + " JOIN derrapdb.vehiculo v ON c.dni = v.cliente_dni"
-					+ " JOIN derrapdb.orden_reparacion o ON v.matricula = o.vehiculo_matricula;";
-			resultado = stm.executeQuery(selectPrecio);
-			while (resultado.next()) {
-				String idCliente = resultado.getString("ID Cliente");
-				String nombreCliente = resultado.getString("Nombre Cliente");
-				String fechaRegistro = resultado.getString("Fecha de Registro");
-				String matriculaAsociada = resultado.getString("Matrícula Asociada");
-				String estadoOrden = resultado.getString("Estado de la Orden");
-				model.addRow(new Object[] { idCliente, nombreCliente, fechaRegistro, matriculaAsociada, estadoOrden });
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (resultado != null)
-					resultado.close();
-				if (stm != null)
-					stm.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
+	    String[] nombreColumnas = { "ID Cliente", "Nombre Cliente", "Fecha de Registro", "Matrícula Asociada",
+	            "Estado de la Orden" };
+	    DefaultTableModel model = new DefaultTableModel();
+	    model.setColumnIdentifiers(nombreColumnas);
+	    tabla = new JTable(model);
+	    scrollPane = new JScrollPane(tabla);
+	    scrollPane.setBounds(191, 196, 800, 402);
+	    contentPane.add(scrollPane);
+	    
+	    try {
+	        stm = cn.createStatement();
+	        String selectPrecio = "SELECT c.dni AS 'ID Cliente', c.nombre AS 'Nombre Cliente', c.fecha_registro AS 'Fecha de Registro', "
+	                + "v.matricula AS 'Matrícula Asociada', o.estado_repa AS 'Estado de la Orden'" // Cambiado a 'estado_repa'
+	                + " FROM derrapdb.cliente c"
+	                + " JOIN derrapdb.vehiculo v ON c.dni = v.cliente_dni"
+	                + " JOIN derrapdb.orden_reparacion o ON v.matricula = o.vehiculo_matricula;";
+	        resultado = stm.executeQuery(selectPrecio);
+	        while (resultado.next()) {
+	            String idCliente = resultado.getString("ID Cliente");
+	            String nombreCliente = resultado.getString("Nombre Cliente");
+	            String fechaRegistro = resultado.getString("Fecha de Registro");
+	            String matriculaAsociada = resultado.getString("Matrícula Asociada");
+	            String estadoOrden = resultado.getString("Estado de la Orden");
+	            model.addRow(new Object[] { idCliente, nombreCliente, fechaRegistro, matriculaAsociada, estadoOrden });
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultado != null)
+	                resultado.close();
+	            if (stm != null)
+	                stm.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 
 

@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -19,9 +20,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import derrap.conector;
 import derrap.eleccionlogin;
@@ -70,7 +74,7 @@ public class clientesMecanico extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
+		conectarBaseDatos();
 
 		// J P A N E L
 		panelOpcionesMenu = new JPanel();
@@ -303,8 +307,64 @@ public class clientesMecanico extends JFrame {
 				lblSegundoIcono.requestFocus();
 			}
 		});
+		
+		mostrartablaclientes();
 		setLocationRelativeTo(null); // Se centra la ventana en la pantalla
 
 	}
+	
+	private void mostrartablaclientes() {
+	    String[] nombreColumnas = { "ID Cliente", "Nombre Cliente", "Fecha de Registro", "Matrícula Asociada", "Estado de la Orden" };
+
+	    DefaultTableModel model = new DefaultTableModel(nombreColumnas, 0) {
+	        private static final long serialVersionUID = 1L;
+
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    };
+
+	    JTable tabla = new JTable(model);
+	    JScrollPane scrollPane = new JScrollPane(tabla);
+	    scrollPane.setBounds(218, 196, 686, 402);
+	    contentPane.add(scrollPane);
+
+	    String query = """
+	            SELECT c.dni AS 'ID Cliente', 
+	                   c.nombre AS 'Nombre Cliente', 
+	                   c.fecha_registro AS 'Fecha de Registro', 
+	                   v.matricula AS 'Matrícula Asociada', 
+	                   o.estado_repa AS 'Estado de la Orden'
+	            FROM derrapdb.cliente c
+	            JOIN derrapdb.vehiculo v ON c.dni = v.cliente_dni
+	            JOIN derrapdb.orden_reparacion o ON v.matricula = o.vehiculo_matricula;
+	            """;
+
+	    try (Statement stm = cn.createStatement();
+	         ResultSet resultado = stm.executeQuery(query)) {
+
+	        while (resultado.next()) {
+	            String idCliente = resultado.getString("ID Cliente");
+	            String nombreCliente = resultado.getString("Nombre Cliente");
+	            String fechaRegistro = resultado.getString("Fecha de Registro");
+	            String matriculaAsociada = resultado.getString("Matrícula Asociada");
+	            String estadoOrden = resultado.getString("Estado de la Orden");
+	            model.addRow(new Object[]{idCliente, nombreCliente, fechaRegistro, matriculaAsociada, estadoOrden});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	private void conectarBaseDatos() {
+		try {
+			cn = conexion.conexion_correcta();
+			stm = cn.createStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

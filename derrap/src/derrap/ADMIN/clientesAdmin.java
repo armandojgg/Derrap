@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -521,8 +522,6 @@ public class clientesAdmin extends JFrame implements Serializable {
 		contentPane.add(lblDireccion);
 
 		lblDireccion.setVisible(false);
-		
-		lblSegundoIcono.setFocusable(true);
 
 		// J T E X T F I E L D S
 		
@@ -598,7 +597,7 @@ public class clientesAdmin extends JFrame implements Serializable {
 
 		textFieldFechaAlta.setVisible(false);
 
-		// F O C U S L I S T E N E R F E C H A A L T A
+		// F O C U S L I S T E N E R  F E C H A  A L T A
 		textFieldFechaAlta.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -685,6 +684,8 @@ public class clientesAdmin extends JFrame implements Serializable {
 		lblSegundoIcono.setBounds(200, 85, 145, 100);
 		contentPane.add(lblSegundoIcono);
 		lblSegundoIcono.setVisible(false);
+		
+		lblSegundoIcono.setFocusable(true);
 
 		// E L E M E N T O S Y S U V I S I B I L I D A D
 
@@ -728,55 +729,49 @@ public class clientesAdmin extends JFrame implements Serializable {
 	// M E T O D O S
 
 	private void mostrartablaclientes() {
-		String[] nombreColumnas = { "ID Cliente", "Nombre Cliente", "Fecha de Registro", "Matrícula Asociada",
-				"Estado de la Orden" };
+	    String[] nombreColumnas = { "ID Cliente", "Nombre Cliente", "Fecha de Registro", "Matrícula Asociada", "Estado de la Orden" };
 
-		DefaultTableModel model = new DefaultTableModel() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
+	    DefaultTableModel model = new DefaultTableModel(nombreColumnas, 0) {
+	        private static final long serialVersionUID = 1L;
 
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		model.setColumnIdentifiers(nombreColumnas);
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    };
 
-		tabla = new JTable(model);
-		scrollPane = new JScrollPane(tabla);
-		scrollPane.setBounds(218, 196, 742, 402);
-		contentPane.add(scrollPane);
+	    tabla = new JTable(model);
+	    scrollPane = new JScrollPane(tabla);
+	    scrollPane.setBounds(218, 196, 742, 402);
+	    contentPane.add(scrollPane);
 
-		try {
-			stm = cn.createStatement();
-			String selectClientes = "SELECT c.dni AS 'ID Cliente', c.nombre AS 'Nombre Cliente', c.fecha_registro AS 'Fecha de Registro', "
-					+ "v.matricula AS 'Matrícula Asociada', o.estado_orden AS 'Estado de la Orden' "
-					+ "FROM derrapdb.cliente c " + "JOIN derrapdb.vehiculo v ON c.dni = v.cliente_dni "
-					+ "JOIN derrapdb.orden_reparacion o ON v.matricula = o.vehiculo_matricula;";
-			resultado = stm.executeQuery(selectClientes);
-			while (resultado.next()) {
-				String idCliente = resultado.getString("ID Cliente");
-				String nombreCliente = resultado.getString("Nombre Cliente");
-				String fechaRegistro = resultado.getString("Fecha de Registro");
-				String matriculaAsociada = resultado.getString("Matrícula Asociada");
-				String estadoOrden = resultado.getString("Estado de la Orden");
-				model.addRow(new Object[] { idCliente, nombreCliente, fechaRegistro, matriculaAsociada, estadoOrden });
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (resultado != null)
-					resultado.close();
-				if (stm != null)
-					stm.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+	    String query = """
+	            SELECT c.dni AS 'ID Cliente', 
+	                   c.nombre AS 'Nombre Cliente', 
+	                   c.fecha_registro AS 'Fecha de Registro', 
+	                   v.matricula AS 'Matrícula Asociada', 
+	                   o.estado_repa AS 'Estado de la Orden'
+	            FROM derrapdb.cliente c
+	            JOIN derrapdb.vehiculo v ON c.dni = v.cliente_dni
+	            JOIN derrapdb.orden_reparacion o ON v.matricula = o.vehiculo_matricula;
+	            """;
+
+	    try (Statement stm = cn.createStatement();
+	         ResultSet resultado = stm.executeQuery(query)) {
+
+	        while (resultado.next()) {
+	            String idCliente = resultado.getString("ID Cliente");
+	            String nombreCliente = resultado.getString("Nombre Cliente");
+	            String fechaRegistro = resultado.getString("Fecha de Registro");
+	            String matriculaAsociada = resultado.getString("Matrícula Asociada");
+	            String estadoOrden = resultado.getString("Estado de la Orden");
+	            model.addRow(new Object[]{idCliente, nombreCliente, fechaRegistro, matriculaAsociada, estadoOrden});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 	
 	private void agregarCliente() {
 

@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -17,9 +18,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import derrap.conector;
 import derrap.eleccionlogin;
@@ -72,7 +76,7 @@ public class precioMecanico extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
+		conectarBaseDatos();
 
 		// J P A N E L
 		panelOpcionesMenu = new JPanel();
@@ -303,7 +307,61 @@ public class precioMecanico extends JFrame {
 		btnPrecio.setEnabled(false); // Deshabilitar
 		btnPrecio.setBackground(Color.WHITE); // Cambiar fondo a blanco
 		setLocationRelativeTo(null); // Se centra la ventana en la pantalla
+		
+		mostrarTablaPrecio();
 
 	}
+	
+	private void conectarBaseDatos() {
+		try {
+			cn = conexion.conexion_correcta();
+			stm = cn.createStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void mostrarTablaPrecio() {
+	    String[] nombreColumnas = {"ID", "Precio Total", "Fecha de Emisión", "Tipo de Pago", "ID Orden de Reparación"};
+
+	    DefaultTableModel model = new DefaultTableModel(nombreColumnas, 0) {
+	        private static final long serialVersionUID = 1L;
+
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    };
+
+	    JTable tabla = new JTable(model);
+	    JScrollPane scrollPane = new JScrollPane(tabla);
+	    scrollPane.setBounds(218, 196, 686, 402);
+	    contentPane.add(scrollPane);
+
+	    String query = """
+	            SELECT id AS 'ID', 
+	                   precio_total AS 'Precio Total', 
+	                   fecha_emision AS 'Fecha de Emisión', 
+	                   tipo_pago AS 'Tipo de Pago', 
+	                   orden_reparacion_id AS 'ID Orden de Reparación'
+	            FROM facturacion;
+	            """;
+
+	    try (Statement stm = cn.createStatement();
+	         ResultSet resultado = stm.executeQuery(query)) {
+
+	        while (resultado.next()) {
+	            String id = resultado.getString("ID");
+	            double precioTotal = resultado.getDouble("Precio Total");
+	            String fechaEmision = resultado.getString("Fecha de Emisión");
+	            String tipoPago = resultado.getString("Tipo de Pago");
+	            String ordenReparacionId = resultado.getString("ID Orden de Reparación");
+	            model.addRow(new Object[]{id, precioTotal, fechaEmision, tipoPago, ordenReparacionId});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 
 }

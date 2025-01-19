@@ -19,9 +19,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import derrap.conector;
 import derrap.eleccionlogin;
@@ -30,9 +33,10 @@ public class ordenesMecanico extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane, panelOpcionesMenu_1, panelOpcionesMenu_2, panelOpcionesMenu;
-	private JButton btnHome, btnClientes, btnVehiculos, btnOrdenes, btnPrecio, btnStock, btnAtras,
-			btnEliminarOrden, btnModificarOrden;
-	private JLabel lblMecanico, lblIconoCasa, lblIcono, lblLogOut, lblImagenLogOut, lblPoweredDerrap, lblOrdenes, lblEliminar, lblIDOrden;
+	private JButton btnHome, btnClientes, btnVehiculos, btnOrdenes, btnPrecio, btnStock, btnAtras, btnEliminarOrden,
+			btnModificarOrden;
+	private JLabel lblMecanico, lblIconoCasa, lblIcono, lblLogOut, lblImagenLogOut, lblPoweredDerrap, lblOrdenes,
+			lblEliminar, lblIDOrden;
 	private JTextField textFieldBuscar, textFieldIDOrden;
 	private JLabel lblSegundoIcono;
 
@@ -71,7 +75,7 @@ public class ordenesMecanico extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
+		conectarBaseDatos();
 
 		// J P A N E L
 		panelOpcionesMenu = new JPanel();
@@ -80,7 +84,7 @@ public class ordenesMecanico extends JFrame {
 		panelOpcionesMenu.setBackground(new Color(128, 0, 0)); // Color del fondo del botón azul oscuro.
 		panelOpcionesMenu.setLayout(null);
 
-		// B O T O N  H O M E
+		// B O T O N H O M E
 		btnHome = new JButton("Home");
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -94,7 +98,7 @@ public class ordenesMecanico extends JFrame {
 		btnHome.setBounds(0, 0, 181, 39);
 		panelOpcionesMenu.add(btnHome);
 
-		// B O T O N  C L I E N T E S
+		// B O T O N C L I E N T E S
 		btnClientes = new JButton("Clientes");
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -108,7 +112,7 @@ public class ordenesMecanico extends JFrame {
 		btnClientes.setBounds(0, 39, 181, 39);
 		panelOpcionesMenu.add(btnClientes);
 
-		// B O T O N  V E H I C U L O S
+		// B O T O N V E H I C U L O S
 		btnVehiculos = new JButton("Vehículos");
 		btnVehiculos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -122,14 +126,14 @@ public class ordenesMecanico extends JFrame {
 		btnVehiculos.setBounds(0, 77, 181, 39);
 		panelOpcionesMenu.add(btnVehiculos);
 
-		// B O T O N  O R D E N E S
+		// B O T O N O R D E N E S
 		btnOrdenes = new JButton("Ordenes");
 		btnOrdenes.setForeground(Color.WHITE);
 		btnOrdenes.setBackground(new Color(128, 0, 0));
 		btnOrdenes.setBounds(0, 115, 181, 39);
 		panelOpcionesMenu.add(btnOrdenes);
 
-		// B O T O N  P R E C I O
+		// B O T O N P R E C I O
 		btnPrecio = new JButton("Precio");
 		btnPrecio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -143,7 +147,7 @@ public class ordenesMecanico extends JFrame {
 		btnPrecio.setBounds(0, 153, 181, 39);
 		panelOpcionesMenu.add(btnPrecio);
 
-		// B O T O N  S T O C K
+		// B O T O N S T O C K
 		btnStock = new JButton("Stock");
 		btnStock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -157,7 +161,7 @@ public class ordenesMecanico extends JFrame {
 		btnStock.setBounds(0, 192, 181, 39);
 		panelOpcionesMenu.add(btnStock);
 
-		// B O T O N  A T R A S
+		// B O T O N A T R A S
 		btnAtras = new JButton("Atrás");
 		btnAtras.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -172,7 +176,7 @@ public class ordenesMecanico extends JFrame {
 		btnAtras.setBounds(784, 603, 120, 45);
 		contentPane.add(btnAtras);
 
-		// B O T O N  E L I M I N A R  O R D E N
+		// B O T O N E L I M I N A R O R D E N
 		btnEliminarOrden = new JButton("Eliminar");
 		btnEliminarOrden.setFont(new Font("Tahoma", Font.BOLD, 18));
 		btnEliminarOrden.setForeground(new Color(255, 255, 255));
@@ -180,13 +184,13 @@ public class ordenesMecanico extends JFrame {
 		btnEliminarOrden.setBounds(437, 601, 111, 45);
 		contentPane.add(btnEliminarOrden);
 
-		// B O T O N  M O D I F I C A R  O R D E N
+		// B O T O N M O D I F I C A R O R D E N
 		btnModificarOrden = new JButton("Modificar orden");
 		btnModificarOrden.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnModificarOrden.setBackground(new Color(128, 255, 0));
 		btnModificarOrden.setBounds(588, 603, 145, 45);
 		contentPane.add(btnModificarOrden);
-		
+
 		// P A N E L E S
 		panelOpcionesMenu_1 = new JPanel();
 		panelOpcionesMenu_1.setLayout(null);
@@ -329,7 +333,9 @@ public class ordenesMecanico extends JFrame {
 				lblSegundoIcono.requestFocus();
 			}
 		});
-		
+
+		mostrartablaordenes();
+
 		// Cambiar el estado del botón actual
 		btnOrdenes.setEnabled(false); // Deshabilitar
 		btnOrdenes.setBackground(Color.WHITE); // Cambiar fondo a blanco
@@ -337,5 +343,51 @@ public class ordenesMecanico extends JFrame {
 
 	}
 
+	private void mostrartablaordenes() {
+		String[] nombreColumnas = { "ID Cliente", "Nombre Cliente", "Fecha de Registro", "Matrícula Asociada",
+				"Estado de la Orden" };
+		DefaultTableModel model = new DefaultTableModel();
+		model.setColumnIdentifiers(nombreColumnas);
+		JTable tabla2 = new JTable(model);
+		JScrollPane scrollPane2 = new JScrollPane(tabla2);
+		scrollPane2.setBounds(191, 196, 729, 332);
+		contentPane.add(scrollPane2);
+
+		try {
+			stm = cn.createStatement();
+			String selectOrdenes = "SELECT c.dni AS 'ID Cliente', c.nombre AS 'Nombre Cliente', c.fecha_registro AS 'Fecha de Registro', "
+					+ "v.matricula AS 'Matrícula Asociada', o.estado_repa AS 'Estado de la Orden'"
+					+ " FROM derrapdb.cliente c" + " JOIN derrapdb.vehiculo v ON c.dni = v.cliente_dni"
+					+ " JOIN derrapdb.orden_reparacion o ON v.matricula = o.vehiculo_matricula;";
+			resultado = stm.executeQuery(selectOrdenes);
+			while (resultado.next()) {
+				String idCliente = resultado.getString("ID Cliente");
+				String nombreCliente = resultado.getString("Nombre Cliente");
+				String fechaRegistro = resultado.getString("Fecha de Registro");
+				String matriculaAsociada = resultado.getString("Matrícula Asociada");
+				String estadoOrden = resultado.getString("Estado de la Orden");
+				model.addRow(new Object[] { idCliente, nombreCliente, fechaRegistro, matriculaAsociada, estadoOrden });
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (resultado != null)
+					resultado.close();
+				if (stm != null)
+					stm.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
+	private void conectarBaseDatos() {
+		try {
+			cn = conexion.conexion_correcta();
+			stm = cn.createStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

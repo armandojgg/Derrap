@@ -22,6 +22,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -96,7 +98,7 @@ public class agregarempleados extends JFrame {
 		panelOpcionesMenu_2.setBounds(0, 343, 181, 341);
 		contentPane.add(panelOpcionesMenu_2);
 
-		// B O T O N  H O M E
+		// B O T O N H O M E
 		btnHome = new JButton("Home");
 		btnHome.setForeground(new Color(255, 255, 255));
 		btnHome.setBackground(new Color(128, 0, 0));
@@ -112,7 +114,7 @@ public class agregarempleados extends JFrame {
 			}
 		});
 
-		// B O T O N  C L I E N T E S
+		// B O T O N C L I E N T E S
 		btnClientes = new JButton("Clientes");
 		btnClientes.setBackground(new Color(128, 0, 0));
 		btnClientes.setForeground(Color.WHITE);
@@ -127,7 +129,7 @@ public class agregarempleados extends JFrame {
 			}
 		});
 
-		// B O T O N  V E H I C U L O S
+		// B O T O N V E H I C U L O S
 		btnVehiculos = new JButton("Vehículos");
 		btnVehiculos.setForeground(Color.WHITE);
 		btnVehiculos.setBackground(new Color(128, 0, 0));
@@ -140,7 +142,7 @@ public class agregarempleados extends JFrame {
 			}
 		});
 
-		// B O T O N  O R D E N E S
+		// B O T O N O R D E N E S
 		btnOrdenes = new JButton("Ordenes");
 		btnOrdenes.setForeground(Color.WHITE);
 		btnOrdenes.setBackground(new Color(128, 0, 0));
@@ -157,7 +159,7 @@ public class agregarempleados extends JFrame {
 
 		});
 
-		// B O T O N  P R E C I O
+		// B O T O N P R E C I O
 		btnPrecio = new JButton("Precio");
 		btnPrecio.setForeground(Color.WHITE);
 		btnPrecio.setBackground(new Color(128, 0, 0));
@@ -173,7 +175,7 @@ public class agregarempleados extends JFrame {
 			}
 		});
 
-		// B O T O N  S T O C K
+		// B O T O N S T O C K
 		btnStock = new JButton("Stock");
 		btnStock.setForeground(Color.WHITE);
 		btnStock.setBackground(new Color(128, 0, 0));
@@ -189,7 +191,7 @@ public class agregarempleados extends JFrame {
 			}
 		});
 
-		// B O T O N  E M P L E A D O S
+		// B O T O N E M P L E A D O S
 		btnEmpleados = new JButton("Empleados");
 		btnEmpleados.setForeground(Color.WHITE);
 		btnEmpleados.setBackground(new Color(128, 0, 0));
@@ -204,7 +206,7 @@ public class agregarempleados extends JFrame {
 				dispose();
 			}
 		});
-		
+
 		btnActualizarEmpleados = new JButton("Actualizar");
 		btnActualizarEmpleados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -216,7 +218,7 @@ public class agregarempleados extends JFrame {
 		btnActualizarEmpleados.setBackground(new Color(128, 128, 255));
 		btnActualizarEmpleados.setBounds(724, 576, 121, 51);
 		contentPane.add(btnActualizarEmpleados);
-		
+
 		btnEliminarEmpleados = new JButton("Eliminar");
 		btnEliminarEmpleados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -228,7 +230,7 @@ public class agregarempleados extends JFrame {
 		btnEliminarEmpleados.setBackground(new Color(255, 0, 0));
 		btnEliminarEmpleados.setBounds(593, 576, 121, 51);
 		contentPane.add(btnEliminarEmpleados);
-		
+
 		btnAgregarEmpleados = new JButton("Agregar");
 		btnAgregarEmpleados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -253,7 +255,7 @@ public class agregarempleados extends JFrame {
 		btnCancelar.setBackground(new Color(128, 0, 0));
 		btnCancelar.setBounds(855, 576, 121, 51);
 		contentPane.add(btnCancelar);
-		
+
 		// Cambiar el estado del botón actual
 		btnEmpleados.setEnabled(false); // Deshabilitar
 		btnEmpleados.setBackground(Color.WHITE);
@@ -279,23 +281,13 @@ public class agregarempleados extends JFrame {
 		lblPoweredDerrap.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPoweredDerrap.setBounds(22, 291, 149, 39);
 		panelOpcionesMenu_2.add(lblPoweredDerrap);
-		
-		lblImagenLogOut.addMouseListener(new MouseAdapter() {
 
-			public void mouseClicked(MouseEvent e) {
-				eleccionlogin eleccionlogin = new eleccionlogin();
-				eleccionlogin.setVisible(true);
-				dispose(); // Cerrar el JFrame actual si es necesario
-			}
-
-		});
-		
 		lblRol = new JLabel("Rol:");
 		lblRol.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRol.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblRol.setBounds(676, 452, 85, 40);
 		contentPane.add(lblRol);
-		
+
 		lblDNI = new JLabel("DNI:");
 		lblDNI.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDNI.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -349,7 +341,7 @@ public class agregarempleados extends JFrame {
 		lblFechaContratacion.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblFechaContratacion.setBounds(571, 387, 192, 40);
 		contentPane.add(lblFechaContratacion);
-		
+
 		lblAgregarUsuarios = new JLabel("AGREGAR USUARIOS");
 		lblAgregarUsuarios.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAgregarUsuarios.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -388,10 +380,19 @@ public class agregarempleados extends JFrame {
 		lblImagenLogOut = new JLabel(iconoRedimensionado3);
 		lblImagenLogOut.setBounds(926, 15, 50, 48);
 		panelOpcionesMenu_1.add(lblImagenLogOut);
-		
-		
+
+		lblImagenLogOut.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				eleccionlogin eleccionlogin = new eleccionlogin();
+				eleccionlogin.setVisible(true);
+				dispose(); // Cerrar el JFrame actual si es necesario
+			}
+
+		});
+
 		// J T E X T F I E L D S
-		
+
 		textFieldDNI = new JTextField();
 		textFieldDNI.setBounds(326, 193, 235, 40);
 		contentPane.add(textFieldDNI);
@@ -432,10 +433,32 @@ public class agregarempleados extends JFrame {
 		textFieldCorreo.setBounds(773, 322, 221, 40);
 		contentPane.add(textFieldCorreo);
 
-		textFieldFecha = new JTextField();
+		textFieldFecha = new JTextField("YYYY/MM/DD");
+		textFieldFecha.setForeground(Color.GRAY);
 		textFieldFecha.setColumns(10);
 		textFieldFecha.setBounds(773, 387, 221, 40);
 		contentPane.add(textFieldFecha);
+
+		// F O C U S  L I S T E N E R  F E C H A  C O N T R A T A C I O N
+		textFieldFecha.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				// Si tiene un mensaje, cuando se hace clic se elimina.
+				if (textFieldFecha.getText().equals("YYYY/MM/DD")) {
+					textFieldFecha.setText("");
+					textFieldFecha.setForeground(Color.BLACK);
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// Se restaura el mensaje, si no hay nada escrito en el despues de hacer clic.
+				if (textFieldFecha.getText().isEmpty()) {
+					textFieldFecha.setText("YYYY/MM/DD");
+					textFieldFecha.setForeground(Color.GRAY);
+				}
+			}
+		});
 
 		textFieldRol = new JTextField();
 		textFieldRol.setColumns(10);
@@ -498,7 +521,7 @@ public class agregarempleados extends JFrame {
 		}
 
 	}
-	
+
 	private void agregarEmpleado() {
 		// Obtener los valores de los JTextField
 		String dni = textFieldDNI.getText();
@@ -517,8 +540,8 @@ public class agregarempleados extends JFrame {
 			stm = cn.createStatement();
 			String insertEmpleado = "INSERT INTO usuario (dni, nombre, apellido1, apellido2, telefono, password, direccion, email, fecha_contratacion, rol) VALUES "
 					+ "('" + dni + "', '" + nombre + "', '" + apellido1 + "', '" + apellido2 + "', '" + telefono
-					+ "', '" + password + "', '" + direccion + "', '" + email + "', '" + fechaContratacion
-					+ "', '" + rol + "')";
+					+ "', '" + password + "', '" + direccion + "', '" + email + "', '" + fechaContratacion + "', '"
+					+ rol + "')";
 			stm.executeUpdate(insertEmpleado);
 			JOptionPane.showMessageDialog(null, "Empleado agregado correctamente");
 
@@ -544,7 +567,7 @@ public class agregarempleados extends JFrame {
 			}
 		}
 	}
-	
+
 	private void eliminarEmpleado() {
 		String dniCliente = textFieldDNI.getText();
 
@@ -580,7 +603,7 @@ public class agregarempleados extends JFrame {
 			}
 		}
 	}
-	
+
 	private void actualizarEmpleado() {
 		// Obtener los valores de los JTextField
 		String dniCliente = textFieldDNI.getText();
@@ -598,10 +621,10 @@ public class agregarempleados extends JFrame {
 		try {
 			stm = cn.createStatement();
 			String updateEmpleado = "UPDATE empleado SET " + "nombre = '" + nombre + "', " + "apellido1 = '"
-					+ primerApellido + "', " + "apellido2 = '" + segundoApellido + "', " + "telefono = '"
-					+ telefono + "', " + "password = '" + contraseña + "', " + "direccion = '" + direccion
-					+ "', " + "email = '" + correo + "', " + "fecha_contratacion = '" + fecha + "', "
-					+ "rol = '" + rol + "' " + "WHERE dni = '" + dniCliente + "'";
+					+ primerApellido + "', " + "apellido2 = '" + segundoApellido + "', " + "telefono = '" + telefono
+					+ "', " + "password = '" + contraseña + "', " + "direccion = '" + direccion + "', " + "email = '"
+					+ correo + "', " + "fecha_contratacion = '" + fecha + "', " + "rol = '" + rol + "' "
+					+ "WHERE dni = '" + dniCliente + "'";
 			int rowsAffected = stm.executeUpdate(updateEmpleado);
 
 			if (rowsAffected > 0) {
@@ -632,7 +655,7 @@ public class agregarempleados extends JFrame {
 			}
 		}
 	}
-	
+
 	private void conectarBaseDatos() {
 		try {
 			cn = conexion.conexion_correcta();

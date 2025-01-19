@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -17,9 +18,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import derrap.conector;
 import derrap.eleccionlogin;
@@ -70,6 +74,8 @@ public class consultarPedidosMecanico extends JFrame {
 		contentPane.setBackground(Color.WHITE);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		conectarBaseDatos();
 
 		// J P A N E L
 		panelOpcionesMenu = new JPanel();
@@ -259,9 +265,59 @@ public class consultarPedidosMecanico extends JFrame {
 				lblSegundoIcono.requestFocus();
 			}
 		});
-
+		
+		mostrarTablaPedidos();
 		setLocationRelativeTo(null); // Se centra la ventana en la pantalla
 
 	}
+	
+	private void conectarBaseDatos() {
+		try {
+			cn = conexion.conexion_correcta();
+			stm = cn.createStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void mostrarTablaPedidos() {
+	    String[] nombreColumnas = {"ID Pedido", "Estado", "Total del Pedido", "Fecha del Pedido"};
 
+	    DefaultTableModel model = new DefaultTableModel(nombreColumnas, 0) {
+	        private static final long serialVersionUID = 1L;
+
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    };
+
+	    JTable tabla = new JTable(model);
+	    JScrollPane scrollPane = new JScrollPane(tabla);
+	    scrollPane.setBounds(218, 196, 686, 402);
+	    contentPane.add(scrollPane);
+
+	    String query = """
+	            SELECT id AS 'ID Pedido', 
+	                   estado AS 'Estado', 
+	                   total_pedido AS 'Total del Pedido', 
+	                   fecha_pedido AS 'Fecha del Pedido'
+	            FROM pedido;
+	            """;
+
+	    try (Statement stm = cn.createStatement();
+	         ResultSet resultado = stm.executeQuery(query)) {
+
+	        while (resultado.next()) {
+	            String idPedido = resultado.getString("ID Pedido");
+	            String estado = resultado.getString("Estado");
+	            String totalPedido = resultado.getString("Total del Pedido");
+	            String fechaPedido = resultado.getString("Fecha del Pedido");
+	            model.addRow(new Object[]{idPedido, estado, totalPedido, fechaPedido});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
 }

@@ -5,31 +5,29 @@ import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-
 import derrap.conector;
 import derrap.eleccionlogin;
 import derrap.recuperarcontrasena;
-
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-public class loginadmin extends JFrame {
+public class loginadmin extends JFrame implements KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -68,6 +66,8 @@ public class loginadmin extends JFrame {
 		contentPane.setBackground(Color.BLACK); // Cambiar el color de fondo
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
 
 		// L A B E L S
 		lblBienvenidos = new JLabel("Bienvenido");
@@ -179,13 +179,13 @@ public class loginadmin extends JFrame {
 
 		btnIniciarSesion = new JButton("Iniciar sesión");
 		btnIniciarSesion.setBounds(45, 350, 194, 35);
-		btnIniciarSesion.setBackground(Color.red); // Color del fondo del botón azul oscuro.
+		btnIniciarSesion.setBackground(Color.red); // Color del fondo del botón rojo.
 		btnIniciarSesion.setForeground(Color.WHITE); ;// Color de las letras en blanco.
 		btnIniciarSesion.setFocusable(false);
 		contentPane.add(btnIniciarSesion);
 		
 		btnAtras = new JButton("Atrás");
-		btnAtras.setBackground(new Color(67,15, 15));
+		btnAtras.setBackground(new Color(67,15,15));
 		btnAtras.setForeground(new Color(255, 255, 255));
 		btnAtras.setFocusable(false);
 		btnAtras.setBounds(85, 492, 121, 38);
@@ -221,6 +221,7 @@ public class loginadmin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				eleccionlogin eleccionlogin = new eleccionlogin();
 				eleccionlogin.setVisible(true);
+			
 				dispose();
 			}
 		});
@@ -249,13 +250,43 @@ public class loginadmin extends JFrame {
 		contentPane.add(etiquetaCoche);
 	    
 		// F O C U S A B L E
-		etiquetaCoche.setFocusable(true);
+		 contentPane.setFocusable(true);
+		 contentPane.requestFocusInWindow();
+	     contentPane.addKeyListener(this);
+	    
+    
 		
 	    this.addWindowListener(new java.awt.event.WindowAdapter() {
 	    	public void windowOpened(java.awt.event.WindowEvent e) {
-	    		etiquetaCoche.requestFocus(); 
+	    		contentPane.requestFocus(); 
 	    	}
 	    });
+	    
+	    
+	}
+	   
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		
+ public void keyPressed(KeyEvent e) {
+	 int keyCode = e.getKeyCode(); 
+
+
+	 		if (keyCode == KeyEvent.VK_ESCAPE) {
+	 			
+			        btnAtras.doClick(); 
+			    }
+
+	   }
+		    
+
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+				
+	  
 	}
 	
 }

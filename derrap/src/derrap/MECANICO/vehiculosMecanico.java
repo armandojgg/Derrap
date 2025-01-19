@@ -17,9 +17,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import derrap.conector;
 import derrap.eleccionlogin;
@@ -71,7 +74,7 @@ public class vehiculosMecanico extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
+		conectarBaseDatos();
 
 		// J P A N E L
 		panelOpcionesMenu = new JPanel();
@@ -298,11 +301,75 @@ public class vehiculosMecanico extends JFrame {
 			}
 		});
 		
+		mostrartablavehiculos();
+		
 		// Cambiar el estado del botón actual
 		btnVehiculos.setEnabled(false); // Deshabilitar
 		btnVehiculos.setBackground(Color.WHITE); // Cambiar fondo a blanco
 		setLocationRelativeTo(null); // Se centra la ventana en la pantalla
 
+	}
+	
+	private void mostrartablavehiculos() {
+	    // Columnas del JTable
+	    String[] nombreColumnas = { "Matrícula", "Marca", "Modelo", "Color", "Año de Fabricación", "Tipo de Vehículo", "Kilometraje", "Fecha de Registro", "ID Cliente" };
+	    
+	    DefaultTableModel model = new DefaultTableModel() {
+	        /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    };
+	    model.setColumnIdentifiers(nombreColumnas);
+	    
+	    JTable tabla = new JTable(model);
+	    JScrollPane scrollPane = new JScrollPane(tabla);
+	    scrollPane.setBounds(218, 196, 691, 402);
+	    contentPane.add(scrollPane);
+	    
+	    try {
+	        stm = cn.createStatement();
+	        String selectVehiculos = "SELECT v.matricula AS 'Matrícula', v.marca AS 'Marca', v.modelo AS 'Modelo', v.color AS 'Color', " +
+	                                 "v.ano_fabr AS 'Año de Fabricación', v.tipo_vehiculo AS 'Tipo de Vehículo', v.km AS 'Kilometraje', " +
+	                                 "v.fecha_registro AS 'Fecha de Registro', v.cliente_dni AS 'ID Cliente' " +
+	                                 "FROM derrapdb.vehiculo v;";
+	        resultado = stm.executeQuery(selectVehiculos);
+	        while (resultado.next()) {
+	            String matricula = resultado.getString("Matrícula");
+	            String marca = resultado.getString("Marca");
+	            String modelo = resultado.getString("Modelo");
+	            String color = resultado.getString("Color");
+	            String anoFabr = resultado.getString("Año de Fabricación");
+	            String tipoVehiculo = resultado.getString("Tipo de Vehículo");
+	            String km = resultado.getString("Kilometraje");
+	            String fechaRegistro = resultado.getString("Fecha de Registro");
+	            String idCliente = resultado.getString("ID Cliente");
+	            model.addRow(new Object[] { matricula, marca, modelo, color, anoFabr, tipoVehiculo, km, fechaRegistro, idCliente });
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (resultado != null) resultado.close();
+	            if (stm != null) stm.close();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+	
+	private void conectarBaseDatos() {
+		try {
+			cn = conexion.conexion_correcta();
+			stm = cn.createStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

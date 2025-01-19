@@ -22,6 +22,8 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -275,16 +277,6 @@ public class agregarvehiculos extends JFrame {
 		lblPoweredDerrap.setBounds(22, 291, 149, 39);
 		panelOpcionesMenu_2.add(lblPoweredDerrap);
 		
-		lblImagenLogOut.addMouseListener(new MouseAdapter() {
-
-			public void mouseClicked(MouseEvent e) {
-				eleccionlogin eleccionlogin = new eleccionlogin();
-				eleccionlogin.setVisible(true);
-				dispose(); // Cerrar el JFrame actual si es necesario
-			}
-
-		});
-		
 		lblMatricula = new JLabel("Matricula:");
 		lblMatricula.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMatricula.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -378,6 +370,16 @@ public class agregarvehiculos extends JFrame {
 		lblImagenLogOut.setBounds(926, 15, 50, 48);
 		panelOpcionesMenu_1.add(lblImagenLogOut);
 		
+		lblImagenLogOut.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				eleccionlogin eleccionlogin = new eleccionlogin();
+				eleccionlogin.setVisible(true);
+				dispose(); // Cerrar el JFrame actual si es necesario
+			}
+
+		});
+		
 		// J T E X T F I E L D S
 		
 		textFieldMatricula = new JTextField();
@@ -415,15 +417,38 @@ public class agregarvehiculos extends JFrame {
 		textFieldKM.setBounds(773, 256, 221, 40);
 		contentPane.add(textFieldKM);
 
-		textFieldFechaRegistro = new JTextField();
+		textFieldFechaRegistro = new JTextField("YYYY/MM/DD");
 		textFieldFechaRegistro.setColumns(10);
 		textFieldFechaRegistro.setBounds(773, 322, 221, 40);
 		contentPane.add(textFieldFechaRegistro);
+		
+		// F O C U S  L I S T E N E R  F E C H A  R E G I S T R O
+		textFieldFechaRegistro.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				// Si tiene un mensaje, cuando se hace clic se elimina.
+				if (textFieldFechaRegistro.getText().equals("YYYY/MM/DD")) {
+					textFieldFechaRegistro.setText("");
+					textFieldFechaRegistro.setForeground(Color.BLACK);
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// Se restaura el mensaje, si no hay nada escrito en el despues de hacer clic.
+				if (textFieldFechaRegistro.getText().isEmpty()) {
+					textFieldFechaRegistro.setText("YYYY/MM/DD");
+					textFieldFechaRegistro.setForeground(Color.GRAY);
+				}
+			}
+		});
 
 		textFieldDNICliente = new JTextField();
 		textFieldDNICliente.setColumns(10);
 		textFieldDNICliente.setBounds(773, 387, 221, 40);
 		contentPane.add(textFieldDNICliente);
+		
+		textFieldDNICliente.setToolTipText("Se debe de ingresar el DNI de un cliente ya registrado.");
 		
 	}
 

@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.ImageIcon;
@@ -17,9 +18,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import derrap.conector;
 import derrap.eleccionlogin;
@@ -70,6 +74,8 @@ public class consultarStockMecanico extends JFrame {
 		contentPane.setBackground(Color.WHITE);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		conectarBaseDatos();
 
 		// J P A N E L
 		panelOpcionesMenu = new JPanel();
@@ -256,7 +262,67 @@ public class consultarStockMecanico extends JFrame {
 		btnStock.setEnabled(false); // Deshabilitar
 		btnStock.setBackground(Color.WHITE); // Cambiar fondo a blanco
 		setLocationRelativeTo(null); // Se centra la ventana en la pantalla
+		
+		mostrarTablaStock();
 
 	}
+	
+	private void mostrarTablaStock() {
+	    String[] nombreColumnas = {"ID", "Stock", "Nombre de la Pieza", "Número de Serie", "Precio de la Pieza", "Marca", "Horas de Trabajo", "ID Proveedor"};
+
+	    DefaultTableModel model = new DefaultTableModel(nombreColumnas, 0) {
+	        private static final long serialVersionUID = 1L;
+
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    };
+
+	    JTable tabla = new JTable(model);
+	    JScrollPane scrollPane = new JScrollPane(tabla);
+	    scrollPane.setBounds(218, 196, 686, 402);
+	    contentPane.add(scrollPane);
+
+	    String query = """
+	            SELECT id AS 'ID', 
+	                   stock AS 'Stock', 
+	                   nombre_pieza AS 'Nombre de la Pieza', 
+	                   num_serie AS 'Número de Serie', 
+	                   precio_pieza AS 'Precio de la Pieza', 
+	                   marca AS 'Marca', 
+	                   horas_trabajo AS 'Horas de Trabajo', 
+	                   proveedor_id AS 'ID Proveedor'
+	            FROM almacen;
+	            """;
+
+	    try (Statement stm = cn.createStatement();
+	         ResultSet resultado = stm.executeQuery(query)) {
+
+	        while (resultado.next()) {
+	            String id = resultado.getString("ID");
+	            int stock = resultado.getInt("Stock");
+	            String nombrePieza = resultado.getString("Nombre de la Pieza");
+	            int numSerie = resultado.getInt("Número de Serie");
+	            double precioPieza = resultado.getDouble("Precio de la Pieza");
+	            String marca = resultado.getString("Marca");
+	            double horasTrabajo = resultado.getDouble("Horas de Trabajo");
+	            String proveedorId = resultado.getString("ID Proveedor");
+	            model.addRow(new Object[]{id, stock, nombrePieza, numSerie, precioPieza, marca, horasTrabajo, proveedorId});
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	private void conectarBaseDatos() {
+		try {
+			cn = conexion.conexion_correcta();
+			stm = cn.createStatement();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 }
